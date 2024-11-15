@@ -1,0 +1,36 @@
+name: healthapp
+description: "A new Flutter project."
+
+publish_to: 'none'  # Prevent accidental publication to pub.dev
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.0.0 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  web_socket_channel: ^3.0.1  # WebSocket support for real-time data streaming
+  fl_chart: ^0.69.0           # Charting library to display BPM graph
+  cupertino_icons: ^1.0.8     # iOS style icons
+  intl: ^0.20.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^5.0.0       # Recommended lints for good coding practices
+
+flutter:
+  uses-material-design: true  # Include Material Icons in the app
+
+  # Uncomment and add asset paths if you need images or other assets
+  assets:
+   - assets/images/bpm.png
+   - assets/images/stress.png
+   - assets/images/medical_condition.png
+   - assets/images/temperature.png
+  # Uncomment to add custom fonts
+  # fonts:
+  #   - family: CustomFont
+  #     fonts:
+  #       - asset: assets/fonts/CustomFont-Regular.ttf
