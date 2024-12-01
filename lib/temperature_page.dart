@@ -12,7 +12,7 @@ class TemperaturePage extends StatefulWidget {
 
 class _TemperaturePageState extends State<TemperaturePage> {
   final WebSocketChannel channel = WebSocketChannel.connect(
-    Uri.parse('ws://192.168.215.194:8765'), // Ensure this is the correct IP and port
+    Uri.parse('ws://192.168.79.194:8765'), // Ensure this is the correct IP and port
   );
 
   String temperature = "Waiting for Temperature data...";

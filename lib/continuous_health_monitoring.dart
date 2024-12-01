@@ -12,7 +12,7 @@ class ContinuousHealthMonitoring extends StatefulWidget {
 
 class _ContinuousHealthMonitoringState extends State<ContinuousHealthMonitoring> {
   final WebSocketChannel channel = WebSocketChannel.connect(
-    Uri.parse('ws://192.168.215.194:8765'),
+    Uri.parse('ws://192.168.79.194:8765'),
   );
 
   String bpm = "Waiting for BPM data...";

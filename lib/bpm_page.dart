@@ -12,7 +12,7 @@ class BPMPage extends StatefulWidget {
 
 class _BPMPageState extends State<BPMPage> {
   final WebSocketChannel channel = WebSocketChannel.connect(
-    Uri.parse('ws://192.168.215.194:8765'), // Update to your correct IP and port
+    Uri.parse('ws://192.168.79.194:8765'), // Update to your correct IP and port
   );
 
   String bpm = "Waiting for BPM data...";

@@ -12,7 +12,7 @@ class StressPage extends StatefulWidget {
 
 class _StressPageState extends State<StressPage> {
   final WebSocketChannel channel = WebSocketChannel.connect(
-    Uri.parse('ws://192.168.215.194:8765'), // Update with your Raspberry Pi's IP and port
+    Uri.parse('ws://192.168.79.194:8765'), // Update with your Raspberry Pi's IP and port
   );
 
   String stressLevel = "Waiting for stress data...";
