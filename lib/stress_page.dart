@@ -122,7 +122,7 @@ class _StressPageState extends State<StressPage> {
             SizedBox(height: 10),
             Text(
               stressLevel,
-              style: TextStyle(fontSize: 35, fontWeight: FontWeight.bold),
+              style: TextStyle(fontSize: 35, fontWeight: FontWeight.bold, color: Colors.red),
             ),
             SizedBox(height: 30),
 

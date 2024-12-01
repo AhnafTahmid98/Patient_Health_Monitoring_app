@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:healthapp/main.dart';
-import 'package:healthapp/email_notification.dart';
+import 'package:healthapp/continuous_health_monitoring.dart';
 
 void main() {
   // Test to ensure the app launches with the MainDashboard widget
@@ -18,7 +18,7 @@ void main() {
 
     // Ensure the BPM card is visible before tapping it
     final bpmCard = find.byKey(Key('bpmCard'));
-    await tester.scrollUntilVisible(bpmCard, 200.0);  // Scroll to make it visible
+    await tester.scrollUntilVisible(bpmCard, 200.0); // Scroll to make it visible
     await tester.tap(bpmCard);
     await tester.pumpAndSettle();
 
@@ -32,7 +32,7 @@ void main() {
 
     // Ensure the Temperature card is visible before tapping it
     final temperatureCard = find.byKey(Key('temperatureCard'));
-    await tester.scrollUntilVisible(temperatureCard, 200.0);  // Scroll to make it visible
+    await tester.scrollUntilVisible(temperatureCard, 200.0); // Scroll to make it visible
     await tester.tap(temperatureCard);
     await tester.pumpAndSettle();
 
@@ -46,7 +46,7 @@ void main() {
 
     // Ensure the Stress card is visible before tapping it
     final stressCard = find.byKey(Key('stressCard'));
-    await tester.scrollUntilVisible(stressCard, 200.0);  // Scroll to make it visible
+    await tester.scrollUntilVisible(stressCard, 200.0); // Scroll to make it visible
     await tester.tap(stressCard);
     await tester.pumpAndSettle();
 
@@ -60,7 +60,7 @@ void main() {
 
     // Ensure the Continuous Health Monitoring card is visible before tapping it
     final continuousHealthCard = find.byKey(Key('continuousHealthCard'));
-    await tester.scrollUntilVisible(continuousHealthCard, 200.0);  // Scroll to make it visible
+    await tester.scrollUntilVisible(continuousHealthCard, 200.0); // Scroll to make it visible
     await tester.tap(continuousHealthCard);
     await tester.pumpAndSettle();
 
@@ -84,35 +84,34 @@ void main() {
     expect(find.text('An email alert was sent'), findsOneWidget);
   });
 
-  // Test to verify navigation to Email Notifications page
-  testWidgets('Navigate to Email Notifications page', (WidgetTester tester) async {
+  // Test to verify navigation to Email Notifications page with real notifications
+  testWidgets('Navigate to Email Notifications page with real data', (WidgetTester tester) async {
     await tester.pumpWidget(MyApp());
 
-    // Find the notifications icon in the AppBar and tap it
+    // Navigate to Continuous Health Monitoring page
+    final continuousHealthCard = find.byKey(Key('continuousHealthCard'));
+    await tester.scrollUntilVisible(continuousHealthCard, 200.0); // Scroll to make it visible
+    await tester.tap(continuousHealthCard);
+    await tester.pumpAndSettle();
+
+    // Simulate receiving an email notification via WebSocket
+    final emailAlert = 'Alert: BPM critical - Sent at ${DateTime.now().toString()}';
+    emailNotifications.add(emailAlert); // Add real notification
+    await tester.pumpAndSettle();
+
+    // Navigate back to MainDashboard
+    final backButton = find.byType(BackButton);
+    await tester.tap(backButton);
+    await tester.pumpAndSettle();
+
+    // Open Email Notifications page
     final notificationsIcon = find.byIcon(Icons.notifications);
     expect(notificationsIcon, findsOneWidget);
     await tester.tap(notificationsIcon);
     await tester.pumpAndSettle();
 
-    // Verify that the Email Notifications page appears
+    // Verify that the Email Notifications page appears with real data
     expect(find.text('Email Notifications'), findsOneWidget);
-  });
-
-  // Test to verify email notifications are displayed on the page
-  testWidgets('Email Notifications page displays notifications', (WidgetTester tester) async {
-    // Example notifications
-    final exampleNotifications = [
-      "Alert: BPM critical - Sent at 2024-11-30 14:20:00",
-      "Alert: Temperature high - Sent at 2024-11-30 14:15:00",
-    ];
-
-    await tester.pumpWidget(MaterialApp(
-      home: EmailNotifications(),
-    ));
-
-    // Verify that the page displays each notification
-    for (final notification in exampleNotifications) {
-      expect(find.text(notification), findsWidgets);
-    }
+    expect(find.text(emailAlert), findsOneWidget); // Ensure real notification is displayed
   });
 }

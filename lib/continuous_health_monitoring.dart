@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 import 'package:fl_chart/fl_chart.dart';
 
+List<String> emailNotifications = []; // A global list to store email notifications
+
 class ContinuousHealthMonitoring extends StatefulWidget {
   const ContinuousHealthMonitoring({super.key});
 
@@ -62,12 +64,25 @@ class _ContinuousHealthMonitoringState extends State<ContinuousHealthMonitoring>
           }
           // Show email alert notification
           if (mounted && parsedData.containsKey('EmailAlert')) {
+            final emailMessage = parsedData['EmailAlert'];
+
+            // Show a notification in the app
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
-                content: Text(parsedData['EmailAlert']),
+                content: Text(emailMessage),
                 duration: Duration(seconds: 3),
               ),
             );
+
+            // Store the email alert in the global list
+            emailNotifications.add(
+              '$emailMessage - Sent at ${DateTime.now().toString()}',
+            );
+
+            // Keep only the last 10 notifications
+            if (emailNotifications.length > 10) {
+              emailNotifications.removeAt(0);
+            }
           }
         });
       } catch (e) {

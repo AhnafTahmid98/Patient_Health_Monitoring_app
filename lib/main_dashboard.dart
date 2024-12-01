@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
 import 'package:intl/intl.dart';
+import 'continuous_health_monitoring.dart'; // For accessing emailNotifications list
+import 'package:healthapp/email_notification.dart';
+
 
 class MainDashboard extends StatelessWidget {
   const MainDashboard({super.key});
@@ -9,20 +12,24 @@ class MainDashboard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Dashboard'),
+        title: Text('Patient Health Monitoring'),
         backgroundColor: Colors.blueAccent,
         actions: [
-          // Email Notification Icon
           IconButton(
+            key: Key('notificationsIcon'),
             icon: Icon(Icons.notifications),
-            tooltip: 'Email Notifications',
             onPressed: () {
-              // Navigate to the email notification history page
-              Navigator.pushNamed(context, '/email_notifications');
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => EmailNotifications(notifications: emailNotifications),
+                ),
+              );
             },
           ),
         ],
       ),
+
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: ListView(
