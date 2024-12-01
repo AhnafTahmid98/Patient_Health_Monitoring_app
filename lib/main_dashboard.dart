@@ -11,6 +11,17 @@ class MainDashboard extends StatelessWidget {
       appBar: AppBar(
         title: Text('Dashboard'),
         backgroundColor: Colors.blueAccent,
+        actions: [
+          // Email Notification Icon
+          IconButton(
+            icon: Icon(Icons.notifications),
+            tooltip: 'Email Notifications',
+            onPressed: () {
+              // Navigate to the email notification history page
+              Navigator.pushNamed(context, '/email_notifications');
+            },
+          ),
+        ],
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -31,11 +42,18 @@ class MainDashboard extends StatelessWidget {
                     children: [
                       Text(
                         time,
-                        style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Colors.blueGrey),
+                        style: TextStyle(
+                          fontSize: 24,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.blueGrey,
+                        ),
                       ),
                       Text(
                         "$day, $date",
-                        style: TextStyle(fontSize: 18, color: Colors.blueGrey[700]),
+                        style: TextStyle(
+                          fontSize: 18,
+                          color: Colors.blueGrey[700],
+                        ),
                       ),
                     ],
                   );

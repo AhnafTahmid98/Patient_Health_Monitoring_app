@@ -60,6 +60,15 @@ class _ContinuousHealthMonitoringState extends State<ContinuousHealthMonitoring>
               stressData.removeAt(0);
             }
           }
+          // Show email alert notification
+          if (mounted && parsedData.containsKey('EmailAlert')) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text(parsedData['EmailAlert']),
+                duration: Duration(seconds: 3),
+              ),
+            );
+          }
         });
       } catch (e) {
         setState(() {
@@ -69,15 +78,18 @@ class _ContinuousHealthMonitoringState extends State<ContinuousHealthMonitoring>
     }, onError: (error) {
       if (!isDisposed) {
         setState(() {
-          bpm = temperature = stress = "Connection error";
+          bpm = temperature = stress = "Connection error. Retrying...";
         });
+        Future.delayed(Duration(seconds: 5), _startDataListener); // Retry after 5 seconds
       }
-    }, onDone: () {
-      if (!isDisposed) {
-        setState(() {
-          bpm = temperature = stress = "Connection closed";
-        });
-      }
+    },
+    onDone: () {
+    if (!isDisposed) {
+    setState(() {
+    bpm = temperature = stress = "Connection closed. Retrying...";
+    });
+    Future.delayed(Duration(seconds: 5), _startDataListener); // Retry after 5 seconds
+    }
     });
   }
 
@@ -260,7 +272,11 @@ class _ContinuousHealthMonitoringState extends State<ContinuousHealthMonitoring>
                   ),
                   // Set the Y-axis ranges to match each metric's expected values
                   minY: 0,
-                  maxY: 200, // Default range for BPM, also covering temperature up to 65
+                  maxY: ([
+                    ...bpmData,
+                    ...temperatureData.map((e) => e),
+                    stressData.isEmpty ? 4 : mapStressLevel(stressData.reduce((a, b) => a.length > b.length ? a : b)),
+                  ].reduce((a, b) => a > b ? a : b)) + 10, // Add 10 as buffer
                 ),
               ),
             ),
@@ -294,10 +310,19 @@ class Legend extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        Container(width: 12, height: 12, color: color),
+        Container(
+          key: Key('$text-LegendColor'),
+          width: 12,
+          height: 12,
+          color: color,
+        ),
         SizedBox(width: 5),
-        Text(text),
+        Text(
+          text,
+          key: Key('$text-LegendText'),
+        ),
       ],
     );
   }
 }
+

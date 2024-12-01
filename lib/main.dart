@@ -4,6 +4,7 @@ import 'bpm_page.dart';
 import 'temperature_page.dart';
 import 'stress_page.dart';
 import 'continuous_health_monitoring.dart'; // Import for continuous monitoring page
+import 'email_notification.dart'; // Import for email notifications page
 
 void main() {
   runApp(MyApp());
@@ -16,14 +17,16 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      initialRoute: '/dashboard',  // Set the new initial route
+      initialRoute: '/dashboard', // Set the new initial route
       routes: {
         '/dashboard': (context) => MainDashboard(),
         '/bpm': (context) => BPMPage(),
         '/temperature': (context) => TemperaturePage(),
         '/stress': (context) => StressPage(),
         '/continuous_health_monitoring': (context) => ContinuousHealthMonitoring(),
+        '/email_notifications': (context) => EmailNotifications(), // Add this line
       },
+
     );
   }
 }

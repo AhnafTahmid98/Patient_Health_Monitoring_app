@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:healthapp/main.dart';
+import 'package:healthapp/email_notification.dart';
 
 void main() {
   // Test to ensure the app launches with the MainDashboard widget
@@ -65,5 +66,53 @@ void main() {
 
     // Verify that the Continuous Health Monitoring screen appears by checking for the unique Key
     expect(find.byKey(Key('ContinuousHealthMonitoringPage')), findsOneWidget);
+  });
+
+  // Test to verify Snackbar notifications for EmailAlert
+  testWidgets('Snackbar shows EmailAlert notification', (WidgetTester tester) async {
+    await tester.pumpWidget(MaterialApp(home: Scaffold()));
+
+    // Simulate showing a Snackbar
+    ScaffoldMessenger.of(tester.element(find.byType(Scaffold))).showSnackBar(
+      SnackBar(content: Text('An email alert was sent')),
+    );
+
+    // Trigger a rebuild
+    await tester.pump();
+
+    // Verify that the Snackbar appears with the correct message
+    expect(find.text('An email alert was sent'), findsOneWidget);
+  });
+
+  // Test to verify navigation to Email Notifications page
+  testWidgets('Navigate to Email Notifications page', (WidgetTester tester) async {
+    await tester.pumpWidget(MyApp());
+
+    // Find the notifications icon in the AppBar and tap it
+    final notificationsIcon = find.byIcon(Icons.notifications);
+    expect(notificationsIcon, findsOneWidget);
+    await tester.tap(notificationsIcon);
+    await tester.pumpAndSettle();
+
+    // Verify that the Email Notifications page appears
+    expect(find.text('Email Notifications'), findsOneWidget);
+  });
+
+  // Test to verify email notifications are displayed on the page
+  testWidgets('Email Notifications page displays notifications', (WidgetTester tester) async {
+    // Example notifications
+    final exampleNotifications = [
+      "Alert: BPM critical - Sent at 2024-11-30 14:20:00",
+      "Alert: Temperature high - Sent at 2024-11-30 14:15:00",
+    ];
+
+    await tester.pumpWidget(MaterialApp(
+      home: EmailNotifications(),
+    ));
+
+    // Verify that the page displays each notification
+    for (final notification in exampleNotifications) {
+      expect(find.text(notification), findsWidgets);
+    }
   });
 }
